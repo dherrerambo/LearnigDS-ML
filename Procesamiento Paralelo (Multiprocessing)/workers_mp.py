@@ -24,22 +24,44 @@ def dummy_func(i,j):
 
 
 def dummy_worker(*args, **kwargs):
+    """
+        args = positional arguments
+        kwargs = named arguments
+    """
+    ## debugging
+    try:
+        debug = kwargs["debug"]
+    except:
+        debug = False
+    if debug==True: print("*"*50, " Start debugging.")
+    ## fail?
     if "fail" in kwargs.keys():
         if kwargs["fail"]==True:
-            i = randint(0,10)
-        else:
-            i = randint(1,10)
+            fail = True
     else:
-        i = randint(1,10)
-    if i==0:
-        e = f"Dummy Error, value is {i}"
+        fail = False
+        try:
+            kwargs["static_time"]
+            t = 1
+        except:
+            t = randint(0,3)   # random waiting time between 0 and 3 sec
+    if fail==True:
+        e = f"Dummy Error\n\t[args]={args}\n\t[kwargs]={kwargs}"
         raise Exception(e)
     else:
-        time.sleep(1.5)
-    try:
-        return {"a": args[0], "i": i, "i2": args[0]+i}
-    except:
-        return {"i": i, "i2": args[0]+i}
+        time.sleep(t)
+    ## response
+    if debug==True: print("time=",t)
+    if debug==True: print("args=",args)
+    if debug==True: print("kwargs=",kwargs)
+    resp = dict()
+    if len(kwargs)>0:
+        resp = kwargs.copy()
+    if len(args)>0:
+        resp.update({"args": args})
+    resp.update({"time": t})
+    if debug==True: print("*"*50, " End debugging.")
+    return resp
 
 
  
