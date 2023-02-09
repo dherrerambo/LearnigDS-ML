@@ -1,13 +1,13 @@
 import pandas as pd
 import os
 
-def load_dataset(name):
+def load_dataset(name:str, debug:bool=False):
     cwd = os.getcwd()
-    print(cwd)
+    if debug==True: print(cwd)
     os.chdir(os.path.dirname(cwd))
     fName = f'__datasets\{name}.csv'
     df = pd.read_csv(fName)
     os.chdir(cwd)
-    print(df.shape)
+    print(f"{df.shape}=")
     print(df.info())
     return df
