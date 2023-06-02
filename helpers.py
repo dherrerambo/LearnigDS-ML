@@ -3,11 +3,12 @@ import os
 
 def load_dataset(name:str, debug:bool=False):
     cwd = os.getcwd()
-    if debug==True: print(cwd)
-    os.chdir(os.path.dirname(cwd))
-    fName = f'datasets/{name}.csv'
-    df = pd.read_csv(fName)
-    os.chdir(cwd)
-    print(f"{df.shape}=")
-    print(df.info())
+    cwd = os.path.dirname(cwd)
+    fName = fr'{cwd}\datasets\{name}'
+    try:
+        df = pd.read_csv(fName+".csv.gz")
+    except:
+        df = pd.read_csv(fName+".csv")
+    if debug==False: print(f"{df.shape=}")
+    if debug==True: print(df.info())
     return df
